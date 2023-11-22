@@ -1,5 +1,7 @@
 from database.db import get_connection
 from .entities.tarjeta import Tarjeta
+from utils.rut import validarRut
+import ipdb
 
 
 class TarjetaModel():
@@ -15,8 +17,14 @@ class TarjetaModel():
                 resultset = cursor.fetchall()
 
                 for row in resultset:
+                    #ipdb.set_trace()
                     tarjeta = Tarjeta(row[0],row[1],row[2],row[3])
-                    tarjetas.append(tarjeta.to_JSON())
+                    if validarRut(row[1]):
+                        tarjetas.append(tarjeta.to_JSON())
+                    #tarjetas.append(tarjeta.to_JSON())
+                    else:
+                        pass
+
 
             connection.close()
             return tarjetas

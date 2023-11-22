@@ -1,3 +1,7 @@
+from utils.rut import validarRut
+import ipdb
+
+
 class Tarjeta():
 
     #ahora definimos su constructor
