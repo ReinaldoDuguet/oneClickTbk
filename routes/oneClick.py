@@ -35,7 +35,6 @@ def get_card(username):
 @main.route('cards/<username>')
 def get_too_cards(username):
     try:
-        print(f"ID: {TBK_API_KEY_ID}")
         tarjetas = TarjetaModel.get_muchas_tarjetas(username)
         return jsonify(tarjetas)
     except Exception as ex:
