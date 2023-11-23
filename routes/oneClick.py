@@ -1,5 +1,6 @@
 from flask import Blueprint,jsonify, request
 import ipdb
+from decouple import config
 
 #entities
 from models.entities.tarjeta import Tarjeta
@@ -32,6 +33,7 @@ def get_card(username):
 @main.route('cards/<username>')
 def get_too_cards(username):
     try:
+        print(f"ID: {TBK_API_KEY_ID}")
         tarjetas = TarjetaModel.get_muchas_tarjetas(username)
         return jsonify(tarjetas)
     except Exception as ex:
@@ -40,10 +42,9 @@ def get_too_cards(username):
 
 @main.route('/suscribe', methods=['POST'])
 def post_card():
-    url_suscribe = 'https://webpay3gint.transbank.cl/rswebpaytransaction/api/oneclick/v1.2/inscriptions'
-    Tbk-Api-Key-Id: 597055555541
-    Tbk-Api-Key-Secret: 579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C
-
+    TBK_API_KEY_ID     = config('Tbk-Api-Key-Id')
+    TBK_API_KEY_SECRET = config('Tbk-Api-Key-Secret')
+    TBK_URL_SUSCRIBE   = config('url_suscribe')
     try:
         username     = request.json['username']
         email        = request.json['email']
