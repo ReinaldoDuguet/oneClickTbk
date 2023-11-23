@@ -1,6 +1,8 @@
 from flask import Blueprint,jsonify, request
 import ipdb
 from decouple import config
+import json
+import requests
 
 #entities
 from models.entities.tarjeta import Tarjeta
@@ -50,6 +52,23 @@ def post_card():
         email        = request.json['email']
         response_url = request.json['response_url']
         tarjeta = Tarjeta(username,email,response_url)
+
+        #vamos a Tbk
+        url_suscribe = TBK_URL_SUSCRIBE
+        headers_suscribe = {
+            'Tbk-Api-Key-Id':TBK_API_KEY_ID,
+            'Tbk-Api-Key-Secret':TBK_API_KEY_SECRET,
+            'Content-Type': 'application/json'
+        }
+
+        data_tarjeta = json.dumps({
+            'username':username,
+            'email':email,
+            'response_url':response_url
+            })
+
+        response = requests.request("POST", url= url_suscribe, headers = headers_suscribe, data=data_tarjeta)
+        print(response.text)
 
         affected_rows = TarjetaModel.post_tarjeta(tarjeta)
 
