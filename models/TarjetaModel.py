@@ -12,10 +12,11 @@ class TarjetaModel():
             connection = get_connection()
             tarjetas = []
             with connection.cursor() as cursor:
-                cursor.execute("SELECT id, username, email, response_url from cliente ORDER BY id ASC")
+                cursor.execute("SELECT * from cliente")
                 resultset = cursor.fetchall()
                 for row in resultset:
-                    tarjeta = Tarjeta(row[0],row[1],row[2],row[3])
+                    print(row[1])
+                    tarjeta = Tarjeta(row[1],row[2],row[3])
                     if validarRut(row[1]):   # DE ESTE MODO SOLO TRAE LOS RUTs VALIDOS
                         tarjetas.append(tarjeta.to_JSON())
                     else:
@@ -31,12 +32,11 @@ class TarjetaModel():
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("SELECT id, username, email, response_url from cliente WHERE username = %s",(username,))
+                cursor.execute("SELECT * from cliente WHERE username = %s",(username,))
                 row = cursor.fetchone()
-                print(row)
                 tarjeta = None
                 if row != None:
-                    tarjeta = Tarjeta(row[0],row[1],row[2],row[3])
+                    tarjeta = Tarjeta(row[1],row[2],row[3])
                     tarjeta = tarjeta.to_JSON()
             connection.close()
 
@@ -50,10 +50,10 @@ class TarjetaModel():
             connection = get_connection()
             tarjetas = []
             with connection.cursor() as cursor:
-                cursor.execute("SELECT id, username, email, response_url from cliente WHERE username = %s",(username,))
+                cursor.execute("SELECT * from cliente WHERE username = %s",(username,))
                 resultset = cursor.fetchall()
                 for row in resultset:
-                    tarjeta = Tarjeta(row[0],row[1],row[2],row[3])
+                    tarjeta = Tarjeta(row[1],row[2],row[3])
                     tarjetas.append(tarjeta.to_JSON())
 
             connection.close()
@@ -67,8 +67,8 @@ class TarjetaModel():
         try:
             connection = get_connection()
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO cliente (id,username,email,response_url)
-                                VALUES (%s,%s,%s,%s)""",(tarjeta.id,tarjeta.username,tarjeta.email,tarjeta.response_url))
+                cursor.execute("""INSERT INTO cliente (username,email,response_url)
+                                VALUES (%s,%s,%s)""",(tarjeta.username,tarjeta.email,tarjeta.response_url))
                 affected_rows = cursor.rowcount
                 connection.commit()
 

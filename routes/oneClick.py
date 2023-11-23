@@ -1,6 +1,5 @@
 from flask import Blueprint,jsonify, request
 import ipdb
-import uuid
 
 #entities
 from models.entities.tarjeta import Tarjeta
@@ -34,7 +33,6 @@ def get_card(username):
 def get_too_cards(username):
     try:
         tarjetas = TarjetaModel.get_muchas_tarjetas(username)
-        print(tarjetas)
         return jsonify(tarjetas)
     except Exception as ex:
         return jsonify({'mensaje':str(ex)}), 500
@@ -42,21 +40,19 @@ def get_too_cards(username):
 
 @main.route('/suscribe', methods=['POST'])
 def post_card():
+    url_suscribe = 'https://webpay3gint.transbank.cl/rswebpaytransaction/api/oneclick/v1.2/inscriptions'
+    Tbk-Api-Key-Id: 597055555541
+    Tbk-Api-Key-Secret: 579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C
+
     try:
-        #id           = uuid.uuid4()
-        id           = request.json['id']
         username     = request.json['username']
         email        = request.json['email']
         response_url = request.json['response_url']
-        tarjeta = Tarjeta(id,username,email,response_url)
+        tarjeta = Tarjeta(username,email,response_url)
 
         affected_rows = TarjetaModel.post_tarjeta(tarjeta)
-        print(affected_rows)
 
-        if affected_rows == 1 :
-            return jsonify(tarjeta.id)
-
-        return jsonify({"msje":"Error al insertar valor en bbdd"})
+        return jsonify({"msje":"se ha insertado el valor en bbdd"})
 
     except Exception as ex:
         return jsonify({'mensaje':str(ex)}), 500
