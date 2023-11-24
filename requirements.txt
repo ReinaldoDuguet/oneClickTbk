@@ -1,12 +1,8 @@
 blinker==1.6.2
 click==8.1.7
-<<<<<<< HEAD
 decorator==5.1.1
 executing==2.0.1
-flask
-=======
 flask==2.3.3
->>>>>>> parent of 572a852... test - respuesta inscripcion exitosa
 Flask-Cors==4.0.0
 flask-sqlalchemy==3.1.1
 greenlet==3.0.1
